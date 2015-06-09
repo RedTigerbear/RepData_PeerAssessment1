@@ -1,6 +1,8 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
-output: 
+author: "Anna Popova"
+date: "1 Jun 2015"
+output:
   html_document:
     keep_md: true
 ---
@@ -21,36 +23,44 @@ The variables included in this dataset are:
 
 The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.
 
-# At first, we remove all variables from environment
-rm(list=ls(all=TRUE))
+At first, we set locale from Russian to English
+```{r set_locale}
+Sys.setlocale("LC_TIME", "English")
+```
 
-# Then we get file with data from URL
+Then we get file with data from URL and unzip it
+```{r get_file}
 FileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 
 if (!file.exists("repdata-data-activity.zip")) {
    download.file(FileUrl, destfile = "repdata-data-activity.zip")
 }
 unzip("repdata-data-activity.zip")
+```
 
 ## Assignment
 
 ### Loading and preprocessing the data
-# Load the data
+
+Load the data to `activity_data`
+```{r load_data}
 activity_data <-
     read.csv('activity.csv', header = T)
+```
 
-# Process/transform the data (if necessary) into a format suitable for your analysis
+Transform the data into a format suitable for your analysis
+```{r transform_data}
 activity_data$date <- 
     as.Date(activity_data$date)
+```
 
 ### What is mean total number of steps taken per day?
 For this part of the assignment we ignore the missing values in the dataset.
 
 #### Make a histogram of the total number of steps taken each day
-# At first, we set locale to English
-Sys.setlocale("LC_TIME", "English")
 
-# Summarize the total number of steps taken by each day
+Summarize the total number of steps taken by each day
+```{r make_hist}
 StepsByDay <-
    aggregate(x = activity_data$steps,
              by = list(activity_data$date),
@@ -63,17 +73,23 @@ hist(StepsByDay$steps,
      main = "Histogram of steps taken each day",
      xlab = 'Total Number of Steps',
      col = 'grey')
+```
 
 #### Calculate and report the **mean** and **median** total number of steps taken per day
-#calculate mean and median total number of steps taken per day
+Calculate mean and median total number of steps taken per day
+```{r mean_calc}
 mean_steps = round(mean(StepsByDay$steps), 2)
 median_steps = round(median(StepsByDay$steps), 2)
+```
 
-#draw lines for mean and median
+draw lines for mean and median
+```{r make_lines}
 abline(v = mean_steps, lwd = 3, col = 'blue')
 abline(v = median_steps, lwd = 3, col = 'red')
+```
 
-#place legend
+place legend
+```{r make_legend}
 legend('topright',
        lty = 1,
        lwd = 3,
@@ -82,13 +98,26 @@ legend('topright',
        legend = c(paste('Mean: ', mean_steps),
        paste('Median: ', median_steps))
        )
+```
 
 ### What is the average daily activity pattern?
+#### Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
+
+
+#### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
 ### Imputing missing values
+There are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.
 
+#### Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+
+#### Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+
+#### Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+#### Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
 ### Are there differences in activity patterns between weekdays and weekends?
