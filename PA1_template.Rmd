@@ -1,7 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 author: "Anna Popova"
-date: "1 Jun 2015"
+date: "07 Feb 2016"
 output:
   html_document:
     keep_md: true
